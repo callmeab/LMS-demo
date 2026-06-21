@@ -480,6 +480,159 @@ tbody tr:hover td { background: var(--bg); }
 .modal-close:hover { color: var(--text); }
 .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
 
+/* ─── WIDE MODAL (Add Student w/ ID Card Preview) ────────────── */
+.modal.modal-wide { width: 880px; max-width: 95vw; }
+.add-student-split { display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px; align-items: start; }
+.add-student-form { min-width: 0; }
+.add-student-preview { position: sticky; top: 0; }
+.preview-label { font-size: 12.5px; font-weight: 700; color: var(--text-2); margin-bottom: 12px; text-transform: uppercase; letter-spacing: .5px; }
+
+/* ─── STUDENT ID CARD ─────────────────────────────────────────── */
+.id-card {
+  width: 100%; aspect-ratio: 1.55/1; border-radius: 14px; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border);
+  box-shadow: var(--shadow-md); display: flex; flex-direction: column;
+  font-family: var(--ff-body); position: relative;
+}
+.id-card-top {
+  background: linear-gradient(120deg, var(--brand-600), var(--brand-800));
+  color: #fff; display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  flex-shrink: 0;
+}
+.id-card-logo {
+  width: 30px; height: 30px; border-radius: 8px; background: rgba(255,255,255,.15);
+  border: 1.5px solid rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 11px; font-weight: 800; flex-shrink: 0;
+}
+.id-card-school { flex: 1; line-height: 1.2; }
+.id-card-school strong { display: block; font-size: 12.5px; font-weight: 800; }
+.id-card-school span { font-size: 9px; opacity: .75; }
+.id-card-year {
+  background: rgba(255,255,255,.15); border-radius: 100px; padding: 2px 9px;
+  font-size: 10px; font-weight: 700; flex-shrink: 0;
+}
+.id-card-body { flex: 1; display: flex; gap: 12px; padding: 12px 14px; align-items: flex-start; }
+.id-card-photo {
+  width: 64px; height: 76px; border-radius: 8px; background: var(--brand-100);
+  border: 2px solid var(--brand-300, var(--brand-400)); display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-head); font-size: 20px; font-weight: 800; color: var(--brand-700);
+  flex-shrink: 0;
+}
+.id-card-info { flex: 1; min-width: 0; }
+.idc-name { font-family: var(--ff-head); font-size: 14.5px; font-weight: 800; color: var(--text); margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.idc-row { display: flex; justify-content: space-between; font-size: 10.5px; padding: 1.5px 0; gap: 6px; }
+.idc-k { color: var(--muted); font-weight: 600; flex-shrink: 0; }
+.idc-v { color: var(--text-2); font-weight: 700; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.id-card-qr {
+  width: 50px; height: 50px; flex-shrink: 0; border-radius: 4px; overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg, #0f172a 0 4px, transparent 4px 8px) 0 0/100% 100%,
+    repeating-linear-gradient(90deg, #0f172a 0 4px, transparent 4px 8px) 0 0/100% 100%;
+  background-blend-mode: multiply;
+  position: relative;
+}
+.id-card-qr::before {
+  content: ''; position: absolute; inset: 6px; background: #fff;
+}
+.id-card-qr::after {
+  content: ''; position: absolute; inset: 14px;
+  background:
+    linear-gradient(0deg, #0f172a 50%, transparent 50%),
+    linear-gradient(90deg, #0f172a 50%, transparent 50%);
+  background-size: 6px 6px;
+  opacity: .9;
+}
+.id-card-barcode {
+  height: 26px; margin: 0 14px; flex-shrink: 0;
+  background: repeating-linear-gradient(90deg, #0f172a 0 2px, transparent 2px 3px, #0f172a 3px 4px, transparent 4px 7px);
+  border-radius: 2px;
+}
+.id-card-footer {
+  background: var(--bg); border-top: 1px solid var(--border);
+  padding: 6px 14px; font-size: 8.5px; color: var(--muted); text-align: center;
+  flex-shrink: 0;
+}
+
+/* ─── PAPER GENERATOR ─────────────────────────────────────────── */
+.template-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+.template-card {
+  border: 2px solid var(--border); border-radius: var(--radius-lg); overflow: hidden;
+  cursor: pointer; transition: all .2s; background: var(--surface);
+}
+.template-card:hover { border-color: var(--brand-300, var(--brand-400)); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.template-card.selected { border-color: var(--brand-500); box-shadow: 0 0 0 3px var(--brand-100); }
+.template-thumb {
+  height: 140px; padding: 12px; display: flex; flex-direction: column; gap: 5px;
+  background: var(--bg); position: relative;
+}
+.template-thumb .t-line { height: 4px; border-radius: 2px; background: var(--border); }
+.template-thumb .t-line.dark { background: var(--text-3); }
+.template-info { padding: 12px 14px; border-top: 1px solid var(--border); }
+.template-info strong { display: block; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.template-info span { font-size: 11px; color: var(--muted); }
+.template-check {
+  position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--brand-500); color: #fff; display: none; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 900;
+}
+.template-card.selected .template-check { display: flex; }
+
+/* Paper builder layout */
+.paper-builder { display: grid; grid-template-columns: 380px 1fr; gap: 20px; }
+.qbank-panel { max-height: 720px; overflow-y: auto; }
+.q-type-tabs { display: flex; gap: 6px; margin-bottom: 14px; }
+.q-type-tab {
+  flex: 1; text-align: center; padding: 8px; border-radius: var(--radius-sm); font-size: 12.5px;
+  font-weight: 700; cursor: pointer; border: 1px solid var(--border); color: var(--text-3);
+  transition: all .15s;
+}
+.q-type-tab.active { background: var(--brand-500); color: #fff; border-color: var(--brand-500); }
+.qbank-item {
+  border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px;
+  margin-bottom: 10px; background: var(--surface); transition: all .15s;
+}
+.qbank-item:hover { border-color: var(--brand-300, var(--brand-400)); }
+.qbank-item-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.qbank-q-text { font-size: 13px; color: var(--text); line-height: 1.5; flex: 1; }
+.qbank-meta { display: flex; gap: 6px; margin-top: 6px; }
+.qbank-options { margin-top: 8px; display: grid; grid-template-columns: 1fr 1fr; gap: 5px; }
+.qbank-opt { font-size: 11.5px; color: var(--text-3); padding: 3px 8px; background: var(--bg); border-radius: 6px; }
+
+/* Live paper preview */
+.paper-preview-wrap { background: #525659; border-radius: var(--radius-lg); padding: 24px; min-height: 720px; overflow-y: auto; max-height: 760px; }
+.paper-sheet {
+  background: #fff; width: 100%; max-width: 680px; margin: 0 auto; padding: 36px 40px;
+  font-family: 'Times New Roman', serif; color: #000; box-shadow: 0 4px 24px rgba(0,0,0,.3); min-height: 600px;
+  border-radius: 2px;
+}
+.paper-sheet.tpl-modern { font-family: var(--ff-body); }
+.paper-head-formal { text-align: center; border-bottom: 3px double #000; padding-bottom: 12px; margin-bottom: 16px; }
+.paper-head-formal .p-school { font-size: 20px; font-weight: 700; letter-spacing: .5px; }
+.paper-head-formal .p-sub { font-size: 12px; margin-top: 2px; }
+.paper-head-formal .p-exam-title { font-size: 14px; font-weight: 700; margin-top: 10px; text-decoration: underline; }
+.paper-meta-row { display: flex; justify-content: space-between; font-size: 12.5px; margin: 12px 0 18px; border-top: 1px solid #000; border-bottom: 1px solid #000; padding: 6px 0; }
+.paper-section-title { font-weight: 700; font-size: 13.5px; margin: 18px 0 10px; text-decoration: underline; }
+.paper-q-block { margin-bottom: 12px; font-size: 13px; line-height: 1.7; }
+.paper-q-num { font-weight: 700; }
+.paper-mcq-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; margin: 6px 0 0 18px; font-size: 12.5px; }
+.paper-blank-line { border-bottom: 1px dotted #555; flex: 1; display: inline-block; margin: 0 4px; min-width: 60px; }
+
+/* Modern template styling */
+.paper-sheet.tpl-modern .paper-head-formal { border-bottom: none; background: var(--brand-50); margin: -36px -40px 20px; padding: 24px 40px 16px; border-radius: 2px 2px 0 0; }
+.paper-sheet.tpl-modern .p-school { color: var(--brand-700); }
+.paper-sheet.tpl-modern .paper-section-title { background: var(--brand-500); color: #fff; padding: 6px 12px; border-radius: 6px; text-decoration: none; display: inline-block; }
+.paper-sheet.tpl-modern .paper-meta-row { border: none; background: var(--bg); border-radius: 8px; padding: 10px 14px; }
+
+/* Minimal template */
+.paper-sheet.tpl-minimal { font-family: var(--ff-body); padding: 48px 50px; }
+.paper-sheet.tpl-minimal .paper-head-formal { border-bottom: 1px solid #ddd; text-align: left; }
+.paper-sheet.tpl-minimal .paper-section-title { text-decoration: none; color: var(--text-3); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+/* Compact/grid template */
+.paper-sheet.tpl-grid { font-family: var(--ff-body); }
+.paper-sheet.tpl-grid .paper-head-formal { display: flex; align-items: center; justify-content: space-between; text-align: left; border: none; background: var(--text); color: #fff; margin: -36px -40px 20px; padding: 18px 40px; }
+.paper-sheet.tpl-grid .paper-section-title { text-decoration: none; border-left: 4px solid var(--accent-500); padding-left: 10px; }
+
 /* Toast */
 .toast {
   position: fixed; bottom: 24px; right: 24px; z-index: 2000;
@@ -503,6 +656,8 @@ tbody tr:hover td { background: var(--bg); }
 @media (max-width: 1100px) {
   .stat-grid { grid-template-columns: repeat(2,1fr); }
   .analytics-kpi { grid-template-columns: repeat(2,1fr); }
+  .paper-builder { grid-template-columns: 1fr; }
+  .template-grid { grid-template-columns: repeat(2,1fr); }
 }
 @media (max-width: 900px) {
   #sidebar { width: 60px; }
@@ -511,6 +666,8 @@ tbody tr:hover td { background: var(--bg); }
   .l-hero { flex-direction: column; padding: 48px 24px; }
   .l-hero-right { flex: none; width: 100%; }
   .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .add-student-split { grid-template-columns: 1fr; }
+  .modal.modal-wide { width: 95vw; }
 }
 
 /* ─── EXAM RESULTS ────────────────────────────────────────────── */
@@ -750,6 +907,10 @@ tbody tr:hover td { background: var(--bg); }
         <div class="nav-section-title">Finance & Exams</div>
         <div class="nav-item" data-page="exams">
           <span class="nav-icon">📝</span><span>Exams & Results</span>
+        </div>
+        <div class="nav-item" data-page="paper-gen">
+          <span class="nav-icon">🖨️</span><span>Paper Generator</span>
+          <span class="nav-badge" style="background:var(--accent-500)">New</span>
         </div>
         <div class="nav-item" data-page="fees">
           <span class="nav-icon">💳</span><span>Fee Management</span>
@@ -1203,6 +1364,66 @@ tbody tr:hover td { background: var(--bg); }
           </div>
         </div>
 
+        <!-- ─── PAPER GENERATOR ────────────────────────── -->
+        <div class="page" id="page-paper-gen">
+          <div class="page-header">
+            <div><h1>Paper Generator</h1><p>Template chunein, question bank se sawal add karein, aur live preview se paper print karein</p></div>
+            <div class="page-header-actions">
+              <button class="btn btn-secondary" onclick="resetPaper()">♻️ Reset</button>
+              <button class="btn btn-primary" onclick="printPaper()">🖨️ Print / Save PDF</button>
+            </div>
+          </div>
+
+          <!-- Step 1: Template Selection -->
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header">
+              <div class="card-title">1️⃣ Template Chunein</div>
+              <span style="font-size:12px;color:var(--muted)">Preview neeche live update hoga</span>
+            </div>
+            <div class="card-body">
+              <div class="template-grid" id="template-grid"></div>
+            </div>
+          </div>
+
+          <!-- Step 2: Paper Details -->
+          <div class="card" style="margin-bottom:20px">
+            <div class="card-header"><div class="card-title">2️⃣ Paper Details</div></div>
+            <div class="card-body">
+              <div class="form-grid-3">
+                <div class="form-group"><label class="form-label">Subject</label><input class="form-input" id="pg-subject" value="Mathematics" oninput="renderPaperPreview()"></div>
+                <div class="form-group"><label class="form-label">Class / Section</label><input class="form-input" id="pg-class" value="Grade 8-A" oninput="renderPaperPreview()"></div>
+                <div class="form-group"><label class="form-label">Exam Title</label><input class="form-input" id="pg-exam-title" value="2nd Term Examination 2025" oninput="renderPaperPreview()"></div>
+                <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="pg-date" type="date" value="2025-07-01" oninput="renderPaperPreview()"></div>
+                <div class="form-group"><label class="form-label">Time Allowed</label><input class="form-input" id="pg-time" value="2 Hours" oninput="renderPaperPreview()"></div>
+                <div class="form-group"><label class="form-label">Total Marks</label><input class="form-input" id="pg-marks" value="Auto" readonly></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3: Question Bank + Live Preview -->
+          <div class="card">
+            <div class="card-header"><div class="card-title">3️⃣ Sawal Chunein & Live Preview Dekhein</div></div>
+            <div class="card-body">
+              <div class="paper-builder">
+                <!-- Question bank panel -->
+                <div>
+                  <div class="q-type-tabs">
+                    <div class="q-type-tab active" id="qtab-objective" onclick="switchQType('objective')">🔘 Objective (MCQs)</div>
+                    <div class="q-type-tab" id="qtab-subjective" onclick="switchQType('subjective')">✍️ Subjective</div>
+                  </div>
+                  <div class="qbank-panel" id="qbank-panel"></div>
+                </div>
+                <!-- Live preview -->
+                <div>
+                  <div class="paper-preview-wrap">
+                    <div class="paper-sheet" id="paper-sheet"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- ─── FEES ───────────────────────────────────── -->
         <div class="page" id="page-fees">
           <div class="page-header">
@@ -1535,22 +1756,79 @@ tbody tr:hover td { background: var(--bg); }
      MODALS
 ═════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal-add-student" onclick="if(event.target===this)closeModal(this.id)">
-  <div class="modal">
+  <div class="modal modal-wide">
     <div class="modal-title">Add New Student <span class="modal-close" onclick="closeModal('modal-add-student')">✕</span></div>
-    <div class="form-grid-2">
-      <div class="form-group"><label class="form-label">First Name</label><input class="form-input" placeholder="Ahmad"></div>
-      <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" placeholder="Khan"></div>
-      <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input" type="date"></div>
-      <div class="form-group"><label class="form-label">Gender</label><select class="form-input form-select"><option>Male</option><option>Female</option></select></div>
-      <div class="form-group"><label class="form-label">Class</label><select class="form-input form-select"><option>Grade 1-A</option><option>Grade 2-A</option><option>Grade 8-A</option></select></div>
-      <div class="form-group"><label class="form-label">Roll Number</label><input class="form-input" placeholder="Auto-generated"></div>
-      <div class="form-group"><label class="form-label">Father's Name</label><input class="form-input" placeholder="Mr. Tariq Khan"></div>
-      <div class="form-group"><label class="form-label">Contact Number</label><input class="form-input" placeholder="0300-1234567"></div>
-    </div>
-    <div class="form-group"><label class="form-label">Address</label><input class="form-input" placeholder="House #, Street, Area, City"></div>
-    <div class="modal-actions">
-      <button class="btn btn-secondary" onclick="closeModal('modal-add-student')">Cancel</button>
-      <button class="btn btn-primary" onclick="closeModal('modal-add-student');showToast('Student added successfully!','success')">Save Student</button>
+    <div class="add-student-split">
+      <!-- LEFT: Form -->
+      <div class="add-student-form">
+        <div class="form-grid-2">
+          <div class="form-group"><label class="form-label">First Name</label><input class="form-input" id="as-fname" placeholder="Ahmad" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Last Name</label><input class="form-input" id="as-lname" placeholder="Khan" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Date of Birth</label><input class="form-input" id="as-dob" type="date" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Gender</label>
+            <select class="form-input form-select" id="as-gender" onchange="updateStudentCardPreview()"><option>Male</option><option>Female</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">Class</label>
+            <select class="form-input form-select" id="as-class" onchange="updateStudentCardPreview()">
+              <option>Grade 1-A</option><option>Grade 2-A</option><option>Grade 3-B</option>
+              <option>Grade 5-A</option><option selected>Grade 8-A</option><option>Grade 8-B</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Blood Group</label>
+            <select class="form-input form-select" id="as-blood" onchange="updateStudentCardPreview()">
+              <option>O+</option><option>O-</option><option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option><option>AB+</option><option>AB-</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Roll Number</label><input class="form-input" id="as-roll" placeholder="Auto-generated" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Father's Name</label><input class="form-input" id="as-father" placeholder="Mr. Tariq Khan" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Contact Number</label><input class="form-input" id="as-contact" placeholder="0300-1234567" oninput="updateStudentCardPreview()"></div>
+          <div class="form-group"><label class="form-label">Emergency Contact</label><input class="form-input" id="as-emergency" placeholder="0321-9876543" oninput="updateStudentCardPreview()"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Address</label><input class="form-input" id="as-address" placeholder="House #, Street, Area, City" oninput="updateStudentCardPreview()"></div>
+        <div class="modal-actions" style="margin-top:8px">
+          <button class="btn btn-secondary" onclick="closeModal('modal-add-student')">Cancel</button>
+          <button class="btn btn-primary" onclick="saveNewStudent()">💾 Save & Generate Card</button>
+        </div>
+      </div>
+
+      <!-- RIGHT: Live ID Card Preview -->
+      <div class="add-student-preview">
+        <div class="preview-label">📇 Student ID Card <span style="color:var(--brand-500);font-weight:700">· Live Preview</span></div>
+        <div class="id-card" id="id-card-preview">
+          <div class="id-card-top">
+            <div class="id-card-logo" id="idc-initials">CPS</div>
+            <div class="id-card-school">
+              <strong id="idc-schoolname">City Public School</strong>
+              <span>Student Identity Card</span>
+            </div>
+            <div class="id-card-year">2025–26</div>
+          </div>
+          <div class="id-card-body">
+            <div class="id-card-photo">
+              <span id="idc-photo-initials">AK</span>
+            </div>
+            <div class="id-card-info">
+              <div class="idc-name" id="idc-name">Ahmad Khan</div>
+              <div class="idc-row"><span class="idc-k">Class</span><span class="idc-v" id="idc-class">Grade 8-A</span></div>
+              <div class="idc-row"><span class="idc-k">Roll #</span><span class="idc-v" id="idc-roll">2025-0001</span></div>
+              <div class="idc-row"><span class="idc-k">DOB</span><span class="idc-v" id="idc-dob">—</span></div>
+              <div class="idc-row"><span class="idc-k">Blood</span><span class="idc-v" id="idc-blood">O+</span></div>
+              <div class="idc-row"><span class="idc-k">Father</span><span class="idc-v" id="idc-father">—</span></div>
+              <div class="idc-row"><span class="idc-k">Contact</span><span class="idc-v" id="idc-contact">—</span></div>
+            </div>
+            <div class="id-card-qr" id="idc-qr"></div>
+          </div>
+          <div class="id-card-barcode" id="idc-barcode"></div>
+          <div class="id-card-footer">
+            <span id="idc-address-foot">Valid only with school stamp & signature</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn btn-secondary btn-sm" style="flex:1" onclick="showToast('Card downloaded as PNG')">⬇️ Download</button>
+          <button class="btn btn-secondary btn-sm" style="flex:1" onclick="showToast('Sent to printer queue')">🖨️ Print Card</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -1807,9 +2085,11 @@ function navTo(pageId) {
   const titles = {
     dashboard:'Dashboard',students:'Student Management',teachers:'Teacher Management',
     attendance:'Attendance',timetable:'Timetable',exams:'Exams & Results',
+    'paper-gen':'Paper Generator',
     fees:'Fee Management',notices:'Notices & Announcements',parents:'Parent Portal',reports:'Reports & Analytics'
   };
   document.getElementById('topbar-title').textContent = titles[pageId] || pageId;
+  if(pageId === 'paper-gen') initPaperGenerator();
 }
 document.querySelectorAll('.nav-item[data-page]').forEach(item => {
   item.addEventListener('click', () => navTo(item.dataset.page));
